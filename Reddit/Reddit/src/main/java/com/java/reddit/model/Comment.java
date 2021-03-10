@@ -17,7 +17,7 @@ import java.time.Instant;
 import static javax.persistence.FetchType.LAZY;
 
 @NoArgsConstructor
-@Builder
+//@Builder
 @Entity
 public class Comment {
     @Id

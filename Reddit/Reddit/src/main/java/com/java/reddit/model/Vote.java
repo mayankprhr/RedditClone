@@ -15,7 +15,7 @@ import static javax.persistence.FetchType.LAZY;;
 
 @NoArgsConstructor
 @Entity
-@Builder
+//@Builder
 public class Vote {
     @Id
     @GeneratedValue(strategy = IDENTITY)
