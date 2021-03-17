@@ -1,0 +1,29 @@
+package com.hauxi.project.springredditclone.controller;
+
+import org.springframework.web.bind.annotation.*;
+
+import lombok.AllArgsConstructor;
+import javax.validation.Valid;
+
+import com.hauxi.project.springredditclone.dto.RegisterRequest;
+import com.hauxi.project.springredditclone.service.AuthService;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import static org.springframework.http.HttpStatus.OK;
+
+@RestController
+@RequestMapping("/api/auth")
+@AllArgsConstructor
+public class AuthController {
+
+    private final AuthService authService;
+
+    @PostMapping("/signup")
+    public ResponseEntity<String> signup(@RequestBody RegisterRequest registerRequest) {
+        authService.signup(registerRequest);
+        return new ResponseEntity<>("User registration successful. ", HttpStatus.OK);
+    }
+    
+}
