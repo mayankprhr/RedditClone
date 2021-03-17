@@ -4,6 +4,8 @@ import org.springframework.web.bind.annotation.*;
 
 import lombok.AllArgsConstructor;
 
+import com.hauxi.project.springredditclone.dto.AuthenticationResponse;
+import com.hauxi.project.springredditclone.dto.LoginRequest;
 import com.hauxi.project.springredditclone.dto.RegisterRequest;
 import com.hauxi.project.springredditclone.service.AuthService;
 
@@ -19,15 +21,23 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity signup(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity <String> signup(@RequestBody RegisterRequest registerRequest) {
         authService.signup(registerRequest);
-        return new ResponseEntity(OK);
+        return new ResponseEntity  <> ("User Registration Successful", OK);
     }
     
-@GetMapping("accountVerification/{token}")
-    public ResponseEntity<String> verifyAccount(@PathVariable String token) {
-        authService.verifyAccount(token);
-        return new ResponseEntity<>("Account Activated Successully", OK);
+    @GetMapping("accountVerification/{token}")
+        public ResponseEntity<String> verifyAccount(@PathVariable String token) {
+            authService.verifyAccount(token);
+            return new ResponseEntity<>("Account Activated Successully", OK);
     }
+
+    @PostMapping("/login")
+    public AuthenticationResponse login(@RequestBody LoginRequest LoginRequest){
+        return authService.login(LoginRequest);
+    }
+
+
+
 
 }

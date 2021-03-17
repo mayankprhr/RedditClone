@@ -1,5 +1,9 @@
 package com.hauxi.project.springredditclone.service;
 
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +18,7 @@ import com.hauxi.project.springredditclone.dto.*;
 import com.hauxi.project.springredditclone.exception.RedditException;
 import com.hauxi.project.springredditclone.model.*;
 import com.hauxi.project.springredditclone.repository.*;
+import com.hauxi.project.springredditclone.security.JwtProvider;
 
 @Service
 @AllArgsConstructor
@@ -31,6 +36,8 @@ public class AuthService {
     private final UserRepository userRepository;
     private final VerificationTokenRepository verificationTokenRepository;    
     private final MailService mailService;
+    private final AuthenticationManager authenticationManager; 
+    private final JwtProvider jwtProvider;
 
     @Transactional
     public void signup(RegisterRequest registerRequest)
@@ -78,6 +85,13 @@ public class AuthService {
         Users user = userRepository.findByUsername(username).orElseThrow(() -> new RedditException("User Not Found with id - " + username));
         user.setEnabled(true);
         userRepository.save(user);
+    }
+
+    public AuthenticationResponse login(LoginRequest loginRequest) {
+        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authenticate);
+        String authenticationToken=jwtProvider.generateToken(authenticate);
+        return new AuthenticationResponse(authenticationToken, loginRequest.getUsername());
     }
 
 }
