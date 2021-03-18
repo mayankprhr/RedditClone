@@ -5,14 +5,15 @@ import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.Principal;
+import java.security.PrivateKey;
+import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 
 import javax.annotation.PostConstruct;
 
 import com.hauxi.project.springredditclone.exception.RedditException;
 
-//import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.Jwts;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -38,7 +39,16 @@ public class JwtProvider {
     public String generateToken(Authentication authentication){
         org.springframework.security.core.userdetails.User principal = (User)authentication.getPrincipal();
 
-        principal.getClass();
-        return "null";
+        return Jwts.builder().setSubject(principal.getUsername()).signWith(getPrivateKey()).compact();
     }
+
+    private PrivateKey getPrivateKey(){
+        try {
+            return (PrivateKey) keyStore.getKey("springblog", "secret".toCharArray());
+        } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException e) {
+ 
+            throw new RedditException("Error occured on generating a key from keystore");
+        }
+    }
+
 }
