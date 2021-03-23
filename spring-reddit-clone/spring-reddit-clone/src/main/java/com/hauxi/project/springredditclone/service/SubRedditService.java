@@ -3,6 +3,7 @@ package com.hauxi.project.springredditclone.service;
 // import java.time.Instant;
 
 import com.hauxi.project.springredditclone.dto.SubRedditDto;
+import com.hauxi.project.springredditclone.exception.SubRedditNotFoundException;
 import com.hauxi.project.springredditclone.model.SubReddit;
 import com.hauxi.project.springredditclone.repository.SubRedditRepository;
 
