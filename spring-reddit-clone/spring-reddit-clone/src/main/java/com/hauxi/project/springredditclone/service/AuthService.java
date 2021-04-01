@@ -59,7 +59,7 @@ public class AuthService {
                                 + "http://localhost:8080/api/auth/accountVerification/"
                                 +token
                                  ); 
-        mailService.SendMail(notificationEmail);
+        mailService.sendMail(notificationEmail);
     }
 
     public String generateVerificationToken(Users user)

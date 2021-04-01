@@ -19,8 +19,8 @@ import java.time.Instant;
 import static javax.persistence.FetchType.LAZY;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Entity
 public class Comments {

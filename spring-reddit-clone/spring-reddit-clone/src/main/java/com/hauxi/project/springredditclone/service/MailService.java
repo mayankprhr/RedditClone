@@ -19,16 +19,15 @@ import lombok.extern.slf4j.Slf4j;
 public class MailService {
     
     private final JavaMailSender mailSender;
-    private final MailContentBuilder mailContentBuilder;
 
     @Async
-    void SendMail(NotificationEmail notificationEmail) throws RedditException{
+    void sendMail(NotificationEmail notificationEmail) throws RedditException{
         MimeMessagePreparator messagePreparator = mimeMessage ->{
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setFrom("mayankparihartest@email.com");
             messageHelper.setTo(notificationEmail.getRecipient());
             messageHelper.setSubject(notificationEmail.getSubject());
-            messageHelper.setText(mailContentBuilder.build(notificationEmail.getBody()));
+            messageHelper.setText(notificationEmail.getBody());
         };
 
         try{
