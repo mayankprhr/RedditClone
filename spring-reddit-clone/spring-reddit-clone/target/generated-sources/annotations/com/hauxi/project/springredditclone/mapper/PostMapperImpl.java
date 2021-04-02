@@ -11,11 +11,11 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-04-02T01:49:16+0530",
+    date = "2021-04-03T02:19:05+0530",
     comments = "version: 1.4.2.Final, compiler: Eclipse JDT (IDE) 1.3.1200.v20200916-0645, environment: Java 14.0.2 (AdoptOpenJDK)"
 )
 @Component
-public class PostMapperImpl implements PostMapper {
+public class PostMapperImpl extends PostMapper {
 
     @Override
     public Post map(PostRequest postRequest, SubReddit subReddit, Users user) {
@@ -37,7 +37,8 @@ public class PostMapperImpl implements PostMapper {
         if ( user != null ) {
             post.user( user );
         }
-        post.createDate( (java.time.Instant.now()) );
+        post.createDate( java.time.Instant.now() );
+        post.voteCount( 0 );
 
         return post.build();
     }
@@ -51,11 +52,17 @@ public class PostMapperImpl implements PostMapper {
         PostResponse postResponse = new PostResponse();
 
         postResponse.setId( post.getPostId() );
-        postResponse.setPostName( post.getPostName() );
-        postResponse.setDescription( post.getDescription() );
-        postResponse.setUrl( post.getUrl() );
         postResponse.setSubRedditName( postSubRedditName( post ) );
         postResponse.setUsername( postUserUsername( post ) );
+        postResponse.setDescription( post.getDescription() );
+        postResponse.setPostName( post.getPostName() );
+        postResponse.setUrl( post.getUrl() );
+        postResponse.setVoteCount( post.getVoteCount() );
+
+        postResponse.setCommentCount( commentCount(post) );
+        postResponse.setDuration( getDuration(post) );
+        postResponse.setUpVote( isPostUpVoted(post) );
+        postResponse.setDownVote( isPostDownVoted(post) );
 
         return postResponse;
     }
