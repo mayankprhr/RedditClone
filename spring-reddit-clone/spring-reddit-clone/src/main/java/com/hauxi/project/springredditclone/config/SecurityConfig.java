@@ -5,6 +5,7 @@ import com.hauxi.project.springredditclone.security.JWTAuthenticationFilter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -41,6 +42,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{           //de
         httpSecurity.csrf().disable()       //
         .authorizeRequests()                //to authorize requests 
         .antMatchers("/api/auth/**")        //which starts with following pattern
+        .permitAll()
+        .antMatchers(HttpMethod.GET,"/api/subreddit")
+        .permitAll()
+        .antMatchers("/v2/api-docs",
+                        "/configuration/ui",
+                        "/swagger-resources/**",
+                        "/configuration/security",
+                        "/swagger-ui.html",
+                        "/webjars/**")
         .permitAll()
         .anyRequest()
         .authenticated();                   //any other requests should be authenticated
